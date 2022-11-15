@@ -1,0 +1,18 @@
+.wrapper{
+  .paragraph{
+    text-align: left;
+    width: 300px;
+    height: 50px;
+    background-color: #c7c7ff;
+    margin: 2px 0 2px 0;
+    border-radius: 0 25px 25px 0;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+    }
+  a:focus{
+    background-color: darkseagreen;
+  }
+}

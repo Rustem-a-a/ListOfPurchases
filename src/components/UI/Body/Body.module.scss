@@ -1,0 +1,25 @@
+$border: 2px black solid;
+.bodyWrapper{
+    text-align: center;
+    font-size: 2rem;
+    background: azure;
+    display: grid;
+    grid-template: 800px/350px 1fr;
+    //border:$border;
+.left{
+        grid-area: 1/1/2/2;
+        //border: $border;
+        display: grid;
+        justify-content: left;
+        align-content: start;
+  hr{
+    width: 300px;
+    margin-left: 0px;
+  }
+    }
+
+.right{
+        grid-area: 1/2/2/3;
+        //border: $border;
+    }
+}

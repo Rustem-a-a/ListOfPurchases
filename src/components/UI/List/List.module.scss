@@ -1,0 +1,6 @@
+.uls{
+list-style: none;
+  input:checked + span {
+    text-decoration: line-through;
+  }
+}

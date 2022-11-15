@@ -1,0 +1,22 @@
+$border: 2px black solid;
+.wrapper{
+  display: grid;
+  grid-template: 80px/70px 1fr;
+  //border:$border;
+  //box-sizing: border-box;
+  padding: 5px;
+  box-shadow: 0px 5px 10px 0px;
+  position: relative;
+  .logo{
+    grid-area: 1/1/2/2;
+    font-size: 4rem;
+    //border:$border;
+  }
+  .text{
+    align-self: center;
+    justify-self: left;
+    margin-left: 40px;
+    grid-area: 1/2/2/3;
+    //border:$border;
+  }
+}

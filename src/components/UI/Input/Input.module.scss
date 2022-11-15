@@ -1,0 +1,13 @@
+.input{
+  background-color:  rgba(120,139,153,0.56);
+  width: 450px;
+  height: 40px;
+  border-radius: 10px;
+  border: 0px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  &:focus{
+    background-color: rgba(143,167,253,0.73);
+    outline: 0;
+  }
+}

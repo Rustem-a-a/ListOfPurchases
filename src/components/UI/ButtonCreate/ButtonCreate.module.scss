@@ -1,0 +1,23 @@
+$border: 2px black solid;
+.button{
+  margin: 20px;
+  border-radius: 60px;
+  border:$border;
+  width: 250px;
+  height: 50px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(206, 214, 253, 0.73);
+  border: 0;
+  box-shadow: 0 3px 5px 0px;
+  cursor: pointer;
+  &:hover{
+    box-shadow: 0 3px 5px 3px;
+  }
+  span{
+    margin-left: 10px;
+    font-weight: bold;
+  }
+}
