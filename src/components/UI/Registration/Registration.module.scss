@@ -1,0 +1,18 @@
+.wrapper{
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  height: 100vh;
+  .container{
+    margin-top: -64px;
+    .containerInput{
+      height: 500px;
+      display: grid;
+      justify-content: center;
+      align-content: space-between;
+    }
+    .containerBtn{
+
+     }
+  }
+}

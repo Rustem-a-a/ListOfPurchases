@@ -8,7 +8,7 @@ import ListOfLists from "../ListOfLists/ListOfLists";
 
 
 
-const Body = ({create, items, setItems}) => {
+const Body = () => {
     const dispatch = useDispatch()
     return (
         <div className={styles.bodyWrapper}>
@@ -20,7 +20,7 @@ const Body = ({create, items, setItems}) => {
                 <hr/>
             </div>
             <div className={styles.right}>
-                <List setItems={setItems}/>
+                <List/>
 
             </div>
         </div>

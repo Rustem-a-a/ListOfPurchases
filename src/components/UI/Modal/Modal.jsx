@@ -6,7 +6,7 @@ import todo from '../../../store/index'
 import {setItem, toggleActiveModal} from "../../../store/slices/listSlice";
 import {useDispatch} from "react-redux";
 
-const Modal = ({active, setActive, items, setItems}) => {
+const Modal = () => {
     const [input, setInput] = useState({
         name: null,
         id: '',

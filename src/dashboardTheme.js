@@ -23,5 +23,8 @@ export const dashboardTheme = new createTheme({
             // This is green.A700 as hex.
             main: '#11cb5f',
         },
+        alter:{
+            main:'#24cb11'
+        }
     },
 })

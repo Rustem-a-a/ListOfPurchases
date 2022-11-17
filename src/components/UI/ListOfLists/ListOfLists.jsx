@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styles from './ListOfLists.module.scss'
-import {NavLink,Link} from 'react-router-dom'
+import {NavLink} from 'react-router-dom'
 import {setCurrentList} from "../../../store/slices/listSlice";
 
 const ListOfLists = () => {
@@ -10,7 +10,7 @@ const ListOfLists = () => {
     return (
         <div className={styles.wrapper}>
             {listOfLists.map((item)=>
-                <NavLink to='/asda'
+                <NavLink to='/'
                          className={styles.paragraph}
                          key={item.id}
                 onClick={()=>{dispatch(setCurrentList(item))

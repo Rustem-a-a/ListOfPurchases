@@ -1,30 +1,32 @@
-import Header from "./components/UI/Header/Header";
-import Modal from "./components/UI/Modal/Modal";
-import {useEffect, useState} from "react";
 import Body from "./components/UI/Body/Body";
-import todo from './items'
-import {useSelector} from "react-redux";
-import MUI from "./components/UI/MUI/MUI";
-import React from "react";
-import foo from '../src/store/slices/authSlice'
+import React, {useEffect} from "react";
+import {Routes, Route, Navigate} from 'react-router-dom'
+import Registration from "./components/UI/Registration/Registration";
+import Layout from "./components/Layout";
+import {useDispatch, useSelector} from "react-redux";
+import Login from './components/UI/Login/Login'
+import {checkAuthSlice} from "./store/slices/authSlice";
 
 function App() {
-    const [activeModal,setActiveModal] = useState(false)
-    const [items,setItems] = useState([])
-    const itemsR = useSelector(state => state.listReducer.items)
-    const isActiveModal = useSelector(state=>state.listReducer.isActiveModal)
-    console.log(itemsR)
-    useEffect(()=>setItems([...todo]),[])
-    // const create = ()=>{
-    //     setActiveModal(true)
-    // }
-        return (
+    const authSlice = useSelector((state) => state.authReducer)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(checkAuthSlice())
+    }, [])
+
+    return (
         <>
-            {/*<Header/>*/}
-            <MUI/>
-            <Body items={items}
-                  setItems={setItems}  />
-            {isActiveModal && <Modal active={activeModal} setActive={setActiveModal} items={items} setItems={setItems}/>}
+            <Routes>
+                <Route path='/' element={<Layout/>}>
+                    <Route index element={<Body/>}/>
+                    {!authSlice.isAuth && <Route path='registration' element={<Registration/>}/>}
+                    {authSlice.loading ? <></>
+                        : <>{!authSlice.isAuth ? <Route path='login' element={<Login/>}/>
+                            : <Route path='login' element={<Navigate to='/' replace/>}/>}</>
+                    }
+                    <Route path='*' element={<Body/>}/>
+                </Route>
+            </Routes>
         </>
     );
 }

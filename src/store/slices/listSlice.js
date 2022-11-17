@@ -1,4 +1,4 @@
-import {createSlice, current} from "@reduxjs/toolkit";
+import {createSlice,createAsyncThunk} from "@reduxjs/toolkit";
 
 const initialState = {
     items: [{

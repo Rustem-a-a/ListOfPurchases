@@ -1,17 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {
-    removeItem,
-    setItem,
-    toggleItemCompleted,
-    newParagraph,
-    removeParagraph,
-    updateParagraph,
-    changeParagraph
-} from "../../../store/slices/listSlice";
+import {removeItem,toggleItemCompleted,newParagraph,removeParagraph,updateParagraph} from "../../../store/slices/listSlice";
 import styles from "./List.module.scss";
 import {useDispatch, useSelector} from "react-redux";
-import Input from "../Input/Input";
-// import Button from "../Button/Button";
 import {Box, IconButton, Button,TextField} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -19,8 +9,6 @@ const List = () => {
     const [addItem, setAddItem] = useState('')
     const items = useSelector(state => state.listReducer.currentList.paragraph)
     const [chParagraph,setChParagraph] = useState([...items])
-    console.log(items)
-    console.log(chParagraph)
     const currentList = useSelector(state => state.listReducer.currentList)
     const dispatch = useDispatch()
     const newParagraphs = () => {
