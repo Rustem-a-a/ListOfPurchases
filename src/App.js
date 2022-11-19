@@ -18,9 +18,14 @@ function App() {
         <>
             <Routes>
                 <Route path='/' element={<Layout/>}>
-                    <Route index element={<Body/>}/>
-                    {!authSlice.isAuth && <Route path='registration' element={<Registration/>}/>}
+
+                    {authSlice.isAuth && <Route index element={<Body/>}/>}
+
                     {authSlice.loading ? <></>
+                        : <>{!authSlice.isAuth ? <Route path='registration' element={<Registration/>}/>
+                            : <Route path='registration' element={<Navigate to='/' replace/>}/>}</>
+                    }
+                   {authSlice.loading ? <></>
                         : <>{!authSlice.isAuth ? <Route path='login' element={<Login/>}/>
                             : <Route path='login' element={<Navigate to='/' replace/>}/>}</>
                     }

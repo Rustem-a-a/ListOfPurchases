@@ -1,16 +1,20 @@
 import {createSlice,createAsyncThunk} from "@reduxjs/toolkit";
 
 const initialState = {
-    items: [{
-        name: 'tomatoes',
-        paragraph: [{name: 'one',
-            id: Math.random(),
-            completed: false},{name: 'two',
-            id: Math.random(),
-            completed: false}],
-        id: Date.now(),
-        completed: false
-    },
+    items: [
+        {
+             name: 'tomatoes',
+             paragraph: [
+                {
+                    name: 'one',
+                    id: Math.random(),
+                    completed: false},
+                {
+                    name: 'two',
+                    id: Math.random(),
+                    completed: false}],
+             id: Date.now(),
+             completed: false},
         {
             name: 'potatos',
             paragraph: [],
