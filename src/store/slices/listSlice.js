@@ -1,4 +1,15 @@
 import {createSlice,createAsyncThunk} from "@reduxjs/toolkit";
+import axios from "../../axios";
+
+export const setItemListSlice = createAsyncThunk('listSlice/setItemListSlice', async (fromModal)=>{
+    try{
+        const {data} = await axios.post('/db/listAdd',{fromModal})
+        console.log(data)
+    }
+    catch (e) {
+        alert(e.response.data.message)
+    }
+})
 
 const initialState = {
     items: [
@@ -37,7 +48,6 @@ const listSlice = createSlice({
         {
             setCurrentList(state,action){
               state.currentList = action.payload
-                console.log()
             },
             toggleActiveModal(state, action) {
                 state.isActiveModal = !state.isActiveModal
@@ -70,7 +80,10 @@ const listSlice = createSlice({
             //     state.paragraphs = action.payload
             // }
 
-        }
+        },
+    extraReducers:{
+
+    }
 })
 
 export const {
