@@ -8,6 +8,7 @@ import AddIcon from "@mui/icons-material/Add";
 const List = () => {
     const [addItem, setAddItem] = useState('')
     const UserList = useSelector((state) => state.listReducer)
+    const allItems = useSelector((state) => state.listReducer.items)
     const currentListID = useSelector(state => state.listReducer.currentListId)
     const currentItem = currentListID
         ? UserList.items.filter((i) => i._id === currentListID)

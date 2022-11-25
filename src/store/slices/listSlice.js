@@ -1,6 +1,18 @@
 import {createSlice,createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "../../axios";
 
+export const getListListSlice = createAsyncThunk('listSlice/getListListSlice',
+    async ()=>{
+        try{
+            const {data} = await axios('/db/getList')
+            console.log(data)
+            return data
+        }
+        catch (e) {
+            alert('getListListSlice' + e.response.data.message)
+        }
+    })
+
 export const setItemListSlice = createAsyncThunk('listSlice/setItemListSlice',
     async (dataModal)=>{
     try{
@@ -53,18 +65,6 @@ export const deleteParagraphListSlice = createAsyncThunk('listSlice/deleteParagr
     }
     })
 
-
-export const getListListSlice = createAsyncThunk('listSlice/getListListSlice',
-    async ()=>{
-        try{
-            const {data} = await axios('/db/getList')
-            console.log(data)
-            return data
-        }
-        catch (e) {
-            alert('getListListSlice' + e.response.data.message)
-        }
-    })
 
 export const getShareListListSlice = createAsyncThunk('listSlice/getListListSlice',
     async (dataToShare)=>{
@@ -150,27 +150,23 @@ const listSlice = createSlice({
 
         },
     extraReducers:{
-        [setItemListSlice.pending]:(state)=>{
+        [getListListSlice.pending]:(state)=>{},
+        [getListListSlice.fulfilled]:(state,action)=>{
+            state.items = action.payload.userList.items
+            // state.currentListId = action.payload.userList.items[0]._id
         },
+        [getListListSlice.rejected]:(state)=>{},
+
+
+        [setItemListSlice.pending]:(state)=>{},
 
         [setItemListSlice.fulfilled]:(state,action)=>{
         state.items = action.payload.newUser.items
         },
+        [setItemListSlice.rejected]:(state,action)=>{},
 
-        [setItemListSlice.rejected]:(state,action)=>{
-        },
 
-        [getListListSlice.pending]:(state)=>{
-    },
 
-        [getListListSlice.fulfilled]:(state,action)=>{
-            state.items = action.payload.items
-            state.currentListId = action.payload.items[0]._id
-            },
-
-        [getListListSlice.rejected]:(state)=>{
-        console.log('rejected' + JSON.stringify(state))
-        },
 
         [setParagraphsListSlice.pending]:(state,action)=>{
             },
