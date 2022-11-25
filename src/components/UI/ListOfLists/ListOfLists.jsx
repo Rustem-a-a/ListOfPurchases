@@ -1,8 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styles from './ListOfLists.module.scss'
 import {NavLink} from 'react-router-dom'
-import {setCurrentList} from "../../../store/slices/listSlice";
+import {getListListSlice, setCurrentListId} from "../../../store/slices/listSlice";
+import axios from "../../../axios";
 
 const ListOfLists = () => {
     const listOfLists = useSelector(state => state.listReducer.items)
@@ -10,12 +11,13 @@ const ListOfLists = () => {
     return (
         <div className={styles.wrapper}>
             {listOfLists.map((item)=>
-                <NavLink to='/'
+                <NavLink key={item._id}
+                         to='/'
                          className={styles.paragraph}
-                         key={item.id}
-                onClick={()=>{dispatch(setCurrentList(item))
+                         onClick={()=>{
+                            dispatch(setCurrentListId(item))
                     }}>
-                    <div >{item.name}</div>
+                    <div>{item.name}</div>
                 </NavLink>
                  )}
         </div>

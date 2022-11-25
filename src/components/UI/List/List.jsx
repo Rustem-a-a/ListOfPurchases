@@ -1,130 +1,115 @@
 import React, {useEffect, useState} from 'react';
-import {removeItem,toggleItemCompleted,newParagraph,removeParagraph,updateParagraph} from "../../../store/slices/listSlice";
+import {setParagraphsListSlice, deleteParagraphListSlice, changeParagraphListSlice, getShareListListSlice} from "../../../store/slices/listSlice";
 import styles from "./List.module.scss";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, IconButton, Button,TextField} from "@mui/material";
+import {Box, IconButton, Button, TextField} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 const List = () => {
     const [addItem, setAddItem] = useState('')
-    const items = useSelector(state => state.listReducer.currentList.paragraph)
-    const [chParagraph,setChParagraph] = useState([...items])
-    const currentList = useSelector(state => state.listReducer.currentList)
-    const dispatch = useDispatch()
-    const newParagraphs = () => {
-        if(addItem.trim().length){
-            dispatch(newParagraph({
-                name: addItem,
-                id: Math.random(),
-                completed: false
-            }))}setAddItem('')}
-    const removeTodo = (itemId) => dispatch(removeItem(items.filter((item) => itemId !== item.id)))
-    const removeParagraphs = (itemId) => dispatch(removeParagraph(items.filter((item) => itemId !== item.id)))
-       const complete = (itemsId) => {
-        dispatch(toggleItemCompleted(
-            chParagraph.map((item) => {
-                if (itemsId !== item.id) return item;
-                return {...item, completed: !item.completed}
-            })))
+    const UserList = useSelector((state) => state.listReducer)
+    const currentListID = useSelector(state => state.listReducer.currentListId)
+    const currentItem = currentListID
+        ? UserList.items.filter((i) => i._id === currentListID)
+        : UserList.items
+
+    const currentParagraphs = currentItem[0].paragraph
+    const [componentParagraphs,setComponentParagraphs] = useState([])
+    useEffect(()=>{setComponentParagraphs([...currentParagraphs])},[currentParagraphs])
+
+    console.log('List')
+    const dataToShare={
+        to : "rustem.abdulav@gmail.com",
+        link:"https://shoppinglist.google.com/" ,
+        from: 'Rustem Abdulaev',
+        listName: 'to eata'
     }
-    useEffect(()=>{setChParagraph(items)},[items])
+    const dispatch = useDispatch()
+
+
+    const newParagraphs = () => {
+        if (addItem.trim().length) {
+            dispatch(setParagraphsListSlice(
+                {
+                    id: currentListID,
+                    name: addItem,
+                    completed: false
+                }))
+        }
+        setAddItem('')
+    }
+    const complete = (currentParagraphID) => {
+        const parID = componentParagraphs.filter(paragraph =>
+            paragraph._id === currentParagraphID)
+        const dataForChangeParagraph = {
+            itemID: currentItem[0]._id,
+            paragraphID: parID[0]._id,
+            completed: !parID[0].completed
+        }
+        dispatch(changeParagraphListSlice(dataForChangeParagraph))
+    }
+
+    const removeParagraphs = (currentParagraphID) => {
+        const parID = componentParagraphs.filter(paragraph =>
+            paragraph._id === currentParagraphID)
+        const dataForChangeParagraph = {
+            itemID: currentItem[0]._id,
+            paragraphID: parID[0]._id,
+        }
+        dispatch(deleteParagraphListSlice(dataForChangeParagraph))
+    }
+    const changeNameOfParagraph = (currentParagraphID) => {
+        const par = componentParagraphs.filter(paragraph =>
+            paragraph._id === currentParagraphID)
+        const dataForChangeParagraph = {
+            itemID: currentItem[0]._id,
+            paragraphID: par[0]._id,
+            name: par[0].name
+        }
+           dispatch(changeParagraphListSlice(dataForChangeParagraph))
+    }
     return (
-
-
         <>
-              <Box>
+            <Box>
                 <TextField
-                    onKeyPress={(e)=>{if(e.key==='Enter'){newParagraphs()}
+                    onKeyPress={(e) => {
+                        if (e.key === 'Enter') {
+                            newParagraphs()
+                        }
                     }}
-                    value={addItem}
-                    onChange={(e) => setAddItem(e.target.value)}
-                    style = {{width: 1200}}
-                    autoFocus={true}
-                    color={'secondary'}
-                    sx={{m:1}}
-                    id="standard-basic"
-                    label="Standard"
-                    variant="standard"
-                    />
+                    value={addItem} onChange={(e) => setAddItem(e.target.value)} style={{width: 1200}} autoFocus={true}
+                    color={'secondary'} sx={{m: 1}} id="standard-basic" label="Standard" variant="standard"
+                />
                 <IconButton
                     onClick={newParagraphs}
-                    edge={'start'}
-                    color={'primary'}>
-                    <AddIcon fontSize={'large'} />
+                    edge={'start'} color={'primary'}>
+                    <AddIcon fontSize={'large'}/>
                 </IconButton>
             </Box>
-
             <ul className={styles.uls}>
-                {chParagraph.map((item) =>
-                    <li key={item.id}>
-                        <input type='checkbox'
-                               checked={item.completed}
-                               onChange={() => complete(item.id)}
-                        />
+                {componentParagraphs.map((item) => <li key={item._id}>
+                        <input type='checkbox' checked={item.completed} onChange={() => complete(item._id)}/>
                         <span>
                             <TextField
-
-                                value={item.name}
-                                onChange={(e) =>{
-                                    setChParagraph(chParagraph.map(p=>{if(p.id===item.id){
-                                        const newPar= {
-                                            name: e.target.value,
-                                            id: p.id,
-                                            completed: p.completed
-                                        }
-                                        return newPar;
-                                    }return p
-                                    }))}}
-                                style = {{width: 1200}}
-                                color={'secondary'}
-                                sx={{m:1}}
-                                id="standard-basic"
-                                label="Standard"
-                                variant="standard"
+                                style={{width: 1200}} color={'secondary'} sx={{m: 1}} id="standard-basic"
+                                variant="standard" value={item.name}    onChange={(e)=> {
+                                setComponentParagraphs(componentParagraphs.map(par => {
+                                    if (par._id === item._id) {
+                                        return {...par, name: e.target.value}
+                                    } else return par
+                                }))}}
                             />
                         </span>
-
-                        <span onClick={() => removeParagraphs(item.id)}>❌</span>
+                        <span onClick={() =>changeNameOfParagraph(item._id) }>✓</span>
+                        <span onClick={() => removeParagraphs(item._id)}>❌</span>
                     </li>
                 )}
-
+                {componentParagraphs[0]?.name && <Button onClick={()=>{dispatch(getShareListListSlice(dataToShare))}}>Share</Button>}
             </ul>
-        <Button
-            color={'secondary'}
-            sx={{backgroundColor:'#64b5f6',color:'black','&:hover':{backgroundColor:'green'}}}
-            onClick={()=>{dispatch(updateParagraph(chParagraph))}} >Update list</Button>
+
 
         </>
     );
 };
-
-// <ul className={styles.uls}>
-//     {currentList.paragraph.map((item) =>
-//         <li key={item.id}>
-//             <input type='checkbox'
-//                    checked={item.completed}
-//                    onChange={() => complete(item.id)}
-//             />
-//             <TextField
-//                 value={chParagraph}
-//                 onChange={(e) =>{
-//                     setChParagraph(chParagraph.map(p=>{
-//                         if(p.id===item.id){
-//                             p.name=e.target.value}
-//                         return p
-//                     }))}}
-//                 style = {{width: 1200}}
-//                 autoFocus={true}
-//                 color={'secondary'}
-//                 sx={{m:1}}
-//                 id="standard-basic"
-//                 label="Standard"
-//                 variant="standard" />
-//             <span onClick={() => removeParagraphs(item.id)}>❌</span>
-//         </li>
-//     )}
-//
-// </ul>
-
 
 export default List;

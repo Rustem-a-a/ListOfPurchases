@@ -6,13 +6,13 @@ import Layout from "./components/Layout";
 import {useDispatch, useSelector} from "react-redux";
 import Login from './components/UI/Login/Login'
 import {checkAuthSlice} from "./store/slices/authSlice";
+import {getListListSlice} from "./store/slices/listSlice";
 
 function App() {
     const authSlice = useSelector((state) => state.authReducer)
     const dispatch = useDispatch()
-    useEffect(() => {
-        dispatch(checkAuthSlice())
-    }, [])
+    useEffect(() => {dispatch(checkAuthSlice() )}, [])
+    useEffect(()=>{dispatch(getListListSlice() )},[authSlice.user])
 
     return (
         <>
