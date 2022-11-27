@@ -1,22 +1,27 @@
 import {createSlice,createAsyncThunk} from "@reduxjs/toolkit";
 import axios from "../../axios";
+import items from "../../items";
 
 export const getListListSlice = createAsyncThunk('listSlice/getListListSlice',
     async ()=>{
         try{
             const {data} = await axios('/db/getList')
+            console.log('getListListSlice')
             console.log(data)
             return data
         }
         catch (e) {
-            alert('getListListSlice' + e.response.data.message)
+            // alert('getListListSlice' + e.response.data.message)
+            console.log(e)
         }
     })
 
 export const setItemListSlice = createAsyncThunk('listSlice/setItemListSlice',
     async (dataModal)=>{
     try{
+        console.log('setItemListSlice')
         const {data} = await axios.post('/db/listAdd',dataModal)
+        console.log('setItemListSlice')
         console.log(data)
         return data
         }
@@ -66,51 +71,43 @@ export const deleteParagraphListSlice = createAsyncThunk('listSlice/deleteParagr
     })
 
 
-export const getShareListListSlice = createAsyncThunk('listSlice/getListListSlice',
-    async (dataToShare)=>{
-        try{
-            console.log(dataToShare)
-            const {data} = await axios.post('/db/getShare', dataToShare)
-            console.log(data)
-            return data
-        }
-        catch (e) {
-            alert(e.response.data.message)
-        }
-    })
-
 const initialState = {
     items:
         [
-        {    _id: '',
-             name: '',
-             completed: false,
-             paragraph: [
-                {
-                    name: '',
-                    _id: '',
-                    completed: false},
-             ]
-        }
-    ]
-    ,
+        // {    _id: '    ',
+        //      name: '',
+        //      completed: false,
+        //      paragraph: [
+        //         {
+        //             name: '',
+        //             _id: '',
+        //             completed: false},
+        //      ]
+        // }
+    ],
+    currentItemId:null,
+    sharedItem:
+        // [
+    //     {    _id: '11111',
+    //          name: 'wow',
+    //          completed: false,
+    //          paragraph: []}
+    // ],
+    [],
+    sharedItemsId:
+        // [{_id:'11111',
+        //   name: 'wowi'}],
+        [],
     isActiveModal: false,
-    currentListId:'',
-    currentList: {
-        name: '',
-        paragraph: [],
-        _id: null,
-        completed: false
-    },
-}
+    }
 const listSlice = createSlice({
     name: 'list',
     initialState,
     reducers:
         {
-            setCurrentListId(state,action){
-                state.currentListId = action.payload._id
-                state.currentList = action.payload
+            setCurrentItemId(state,action){
+                state.currentItemId = action.payload
+                localStorage.setItem('currentItemId',action.payload)
             },
             setCurrentList(state,action){
 
@@ -148,20 +145,44 @@ const listSlice = createSlice({
             //     state.paragraphs = action.payload
             // }
 
-        },
+            logoutList(state){
+                 state.items = []
+                 state.currentItemId = null
+                localStorage.removeItem('currentItemId')   }
+    },
     extraReducers:{
         [getListListSlice.pending]:(state)=>{},
         [getListListSlice.fulfilled]:(state,action)=>{
-            state.items = action.payload.userList.items
-            // state.currentListId = action.payload.userList.items[0]._id
+            state.items = !!action.payload?.userList
+                ? action.payload.userList.items
+                : []
+               state.items = !!action.payload?.userList
+                ? action.payload.userList.items
+                : []
+            if(localStorage.getItem('currentItemId')){
+                state.currentItemId =localStorage.getItem('currentItemId')
+            }
+            else{ state.currentItemId = !!action.payload?.userList
+                ? action.payload.userList.items[0]._id
+                : null
+
+            !!action.payload?.userList
+            ? localStorage.setItem('currentItemId',action.payload.userList.items[0]._id)
+            :localStorage.removeItem('currentItemId')}
         },
         [getListListSlice.rejected]:(state)=>{},
 
 
-        [setItemListSlice.pending]:(state)=>{},
 
+
+        [setItemListSlice.pending]:(state)=>{},
         [setItemListSlice.fulfilled]:(state,action)=>{
-        state.items = action.payload.newUser.items
+            console.log(action.payload.updatedList.items)
+        state.items = action.payload.updatedList.items
+            console.log(JSON.parse(JSON.stringify(state.items)))
+        state.currentItemId = action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id
+            localStorage.setItem('currentItemId',action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id)
+            console.log('fulfiled')
         },
         [setItemListSlice.rejected]:(state,action)=>{},
 
@@ -207,11 +228,9 @@ export const {
     toggleItemCompleted,
     setItem,
     removeParagraph,
-    toggleParagraphsCompleted,
-    setCurrentListId,
-    newParagraph,
+    setCurrentItemId,
     changeParagraph,
-    updateParagraph
+    logoutList
 
 } = listSlice.actions
 export default listSlice.reducer

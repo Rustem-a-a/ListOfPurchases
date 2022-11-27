@@ -1,55 +1,45 @@
-import React, {useEffect, useState} from 'react';
-import {setParagraphsListSlice, deleteParagraphListSlice, changeParagraphListSlice, getShareListListSlice} from "../../../store/slices/listSlice";
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {deleteParagraphListSlice, changeParagraphListSlice} from "../../../store/slices/listSlice";
 import styles from "./List.module.scss";
 import {useDispatch, useSelector} from "react-redux";
-import {Box, IconButton, Button, TextField} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import {TextField} from "@mui/material";
+import useDeepCompareEffect from 'use-deep-compare-effect'
 
 const List = () => {
-    const [addItem, setAddItem] = useState('')
-    const UserList = useSelector((state) => state.listReducer)
-    const allItems = useSelector((state) => state.listReducer.items)
-    const currentListID = useSelector(state => state.listReducer.currentListId)
-    const currentItem = currentListID
-        ? UserList.items.filter((i) => i._id === currentListID)
-        : UserList.items
 
-    const currentParagraphs = currentItem[0].paragraph
-    const [componentParagraphs,setComponentParagraphs] = useState([])
-    useEffect(()=>{setComponentParagraphs([...currentParagraphs])},[currentParagraphs])
+    const currentItemId = useSelector(state => state.listReducer.currentItemId)
+    console.log(currentItemId)
+    const item = useSelector(state => state.listReducer.items)
+    const currentItem = !!item.length ? item.filter(i=>i._id===currentItemId) : []
+    console.log(currentItem)
+    const currentParagraphs = !!currentItem.length ? currentItem[0].paragraph : []
+    console.log(currentParagraphs)
+    // const ref = useRef()
+    // ref.current = currentParagraphs
+    // console.log(!!ref.current===currentParagraphs)
+    const currentParagraphsStr = JSON.stringify(currentParagraphs)
+    const [componentParagraphs,setComponentParagraphs] = useState(currentParagraphs)
 
-    console.log('List')
-    const dataToShare={
-        to : "rustem.abdulav@gmail.com",
-        link:"https://shoppinglist.google.com/" ,
-        from: 'Rustem Abdulaev',
-        listName: 'to eata'
-    }
+    useDeepCompareEffect(()=>setComponentParagraphs(currentParagraphs),[currentParagraphs])
+
+    useEffect(()=>{setComponentParagraphs(currentParagraphs)},[currentParagraphsStr])
+    // const ComponentParagraph = ()=>setComponentParagraphs([...currentParagraphs])
+    // ComponentParagraph()
+    // console.log(componentParagraphs)
     const dispatch = useDispatch()
-
-
-    const newParagraphs = () => {
-        if (addItem.trim().length) {
-            dispatch(setParagraphsListSlice(
-                {
-                    id: currentListID,
-                    name: addItem,
-                    completed: false
-                }))
-        }
-        setAddItem('')
-    }
     const complete = (currentParagraphID) => {
         const parID = componentParagraphs.filter(paragraph =>
             paragraph._id === currentParagraphID)
+        console.log(parID)
         const dataForChangeParagraph = {
             itemID: currentItem[0]._id,
             paragraphID: parID[0]._id,
             completed: !parID[0].completed
         }
+        console.log(dataForChangeParagraph)
         dispatch(changeParagraphListSlice(dataForChangeParagraph))
     }
-
+    //
     const removeParagraphs = (currentParagraphID) => {
         const parID = componentParagraphs.filter(paragraph =>
             paragraph._id === currentParagraphID)
@@ -59,6 +49,7 @@ const List = () => {
         }
         dispatch(deleteParagraphListSlice(dataForChangeParagraph))
     }
+
     const changeNameOfParagraph = (currentParagraphID) => {
         const par = componentParagraphs.filter(paragraph =>
             paragraph._id === currentParagraphID)
@@ -71,22 +62,6 @@ const List = () => {
     }
     return (
         <>
-            <Box>
-                <TextField
-                    onKeyPress={(e) => {
-                        if (e.key === 'Enter') {
-                            newParagraphs()
-                        }
-                    }}
-                    value={addItem} onChange={(e) => setAddItem(e.target.value)} style={{width: 1200}} autoFocus={true}
-                    color={'secondary'} sx={{m: 1}} id="standard-basic" label="Standard" variant="standard"
-                />
-                <IconButton
-                    onClick={newParagraphs}
-                    edge={'start'} color={'primary'}>
-                    <AddIcon fontSize={'large'}/>
-                </IconButton>
-            </Box>
             <ul className={styles.uls}>
                 {componentParagraphs.map((item) => <li key={item._id}>
                         <input type='checkbox' checked={item.completed} onChange={() => complete(item._id)}/>
@@ -105,10 +80,7 @@ const List = () => {
                         <span onClick={() => removeParagraphs(item._id)}>❌</span>
                     </li>
                 )}
-                {componentParagraphs[0]?.name && <Button onClick={()=>{dispatch(getShareListListSlice(dataToShare))}}>Share</Button>}
             </ul>
-
-
         </>
     );
 };

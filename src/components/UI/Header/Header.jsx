@@ -6,6 +6,7 @@ import {logoutAuthSlice} from "../../../store/slices/authSlice";
 import {Stack,Avatar} from '@mui/material'
 import {Link} from 'react-router-dom'
 import styles from './Header.module.scss'
+import {logoutList} from "../../../store/slices/listSlice";
 
 const Header = () => {
     const authState = useSelector(state=>state.authReducer)
@@ -33,7 +34,11 @@ const Header = () => {
                     }
                     <Box mr={2}>
                     </Box>
-                    {authState.isAuth && <Link to='/'><Button color='alter' variant='contained' onClick={()=>dispatch(logoutAuthSlice())}>Exit</Button></Link>}
+                    {authState.isAuth && <Link to='/'><Button color='alter' variant='contained' onClick={()=>{
+                        dispatch(logoutAuthSlice())
+                        dispatch(logoutList())
+                    }
+                    }>Exit</Button></Link>}
                 </Toolbar>
             </Container>
         </AppBar>

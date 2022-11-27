@@ -6,6 +6,8 @@ import {getShareListListSlice, toggleActiveModal} from "../../../store/slices/li
 import {useDispatch} from "react-redux";
 import ListOfLists from "../ListOfLists/ListOfLists";
 import Button from "../Button/Button";
+import NewParagraph from "../NewParagraph/NewParagraph";
+import Share from "../Share/Share";
 
 const Body = () => {
     const dispatch = useDispatch()
@@ -17,9 +19,11 @@ const Body = () => {
                     onClick={()=>{dispatch(toggleActiveModal())}}
                     />
                 <ListOfLists/>
-                <hr/>
+
             </div>
             <div className={styles.right}>
+                <NewParagraph/>
+                <Share/>
                 <List/>
             </div>
         </div>

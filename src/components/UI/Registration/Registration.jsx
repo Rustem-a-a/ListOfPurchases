@@ -19,7 +19,7 @@ const Registration = () => {
     const registrationData = {
         username,
         password,
-        email
+        // email
     }
 
        return (
@@ -27,6 +27,7 @@ const Registration = () => {
             <div className={styles.container}>
                 <div className="styles.containerInput">
                     <Input
+                        type='email'
                         style ={inputStyles}
                         placeholder='Username'
                         onChange={(e)=>setUsername(e.target.value)}
@@ -36,11 +37,11 @@ const Registration = () => {
                         placeholder='Password'
                         onChange={(e)=>setPassword(e.target.value)}
                         value={password}/>
-                    <Input
-                        style ={inputStyles}
-                        placeholder='Email'
-                        onChange={(e)=>setEmail(e.target.value)}
-                        value={email}/>
+                    {/*<Input*/}
+                    {/*    style ={inputStyles}*/}
+                    {/*    placeholder='Email'*/}
+                    {/*    onChange={(e)=>setEmail(e.target.value)}*/}
+                    {/*    value={email}/>*/}
                 </div>
                 <div className={styles.containerBtn}>
                     <Button onClick={()=>dispatch(registrationAuthSlice(registrationData))}>Registration</Button>

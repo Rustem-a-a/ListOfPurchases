@@ -50,7 +50,8 @@ export const checkAuthSlice = createAsyncThunk('auth/checkAuthSlice', async ()=>
         localStorage.setItem('accessToken',data.accessToken)
         return data.user
     }catch (e){
-        alert(e.response.data.message)
+        // alert(e.response.data.message)
+        console.log(e)
     }
 
 
@@ -59,8 +60,10 @@ export const checkAuthSlice = createAsyncThunk('auth/checkAuthSlice', async ()=>
 const initialState = {
     user: null,
     isAuth: false,
+    isActivated:false,
     loading: false
 }
+
 const authSlice = createSlice({
     name: 'auth',
     initialState,
