@@ -7,28 +7,35 @@ import {useDispatch, useSelector} from "react-redux";
 import Login from './components/UI/Login/Login'
 import {checkAuthSlice} from "./store/slices/authSlice";
 import {getListListSlice} from "./store/slices/listSlice";
+import RedirectMsg from "./components/UI/RedirectMsg/RedirectMsg";
 
 function App() {
     const authSlice = useSelector((state) => state.authReducer)
     const dispatch = useDispatch()
     useEffect(() => {dispatch(checkAuthSlice() )}, [])
     useEffect(()=>{dispatch(getListListSlice() )},[authSlice.user])
-
+    console.log(authSlice.isActivated)
     return (
         <>
             <Routes>
                 <Route path='/' element={<Layout/>}>
 
-                    {authSlice.isAuth && <Route index element={<Body/>}/>}
+                    {authSlice.isAuth &&
+                        <>
+                        {authSlice.isActivated
+                        ? <>{authSlice.isAuth && <Route index element={<Body/>}/>}</>
+                        : <Route index element={<RedirectMsg/>}/>}
+                        </>
+                    }
+                    {!authSlice.isAuth ? <Route path='registration' element={<Registration/>}/>
+                                        : <Route path='registration' element={<Navigate to='/' replace/>}/>}
 
-                    {authSlice.loading ? <></>
-                        : <>{!authSlice.isAuth ? <Route path='registration' element={<Registration/>}/>
-                            : <Route path='registration' element={<Navigate to='/' replace/>}/>}</>
-                    }
-                   {authSlice.loading ? <></>
-                        : <>{!authSlice.isAuth ? <Route path='login' element={<Login/>}/>
-                            : <Route path='login' element={<Navigate to='/' replace/>}/>}</>
-                    }
+
+
+
+                    {!authSlice.isAuth ? <Route path='login' element={<Login/>}/>
+                            : <Route path='login' element={<Navigate to='/' replace/>}/>}
+
                     <Route path='*' element={<Body/>}/>
                 </Route>
             </Routes>

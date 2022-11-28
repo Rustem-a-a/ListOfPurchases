@@ -9,7 +9,7 @@ export const registrationAuthSlice = createAsyncThunk('auth/registrationAuthSlic
         if (data.accessToken) {
             localStorage.setItem('accessToken', data.accessToken)
         }
-        console.log(data)
+        console.log('registrationAuthSlice')
         return data.user
     }catch (e){
         alert(e.response.data.message)
@@ -24,7 +24,7 @@ export const loginAuthSlice = createAsyncThunk('auth/loginAuthSlice',
         if (data.accessToken) {
             localStorage.setItem('accessToken', data.accessToken)
         }
-        console.log(data)
+        console.log('loginAuthSlice')
         return data.user
     }catch (e){
         alert(e.response.data.message)
@@ -38,6 +38,7 @@ export const logoutAuthSlice = createAsyncThunk('auth/logoutAuthSlice',
     try{
         await axios.get('/auth/logout')
         localStorage.removeItem('accessToken')
+        console.log('logoutAuthSlice')
     }catch (e){
         alert(e.response.data.message)
     }
@@ -48,6 +49,8 @@ export const checkAuthSlice = createAsyncThunk('auth/checkAuthSlice', async ()=>
     try{
         const {data} = await axiosDef('http://localhost:5000/auth/refresh',{withCredentials:true})
         localStorage.setItem('accessToken',data.accessToken)
+        console.log('checkAuthSlice')
+        console.log(data)
         return data.user
     }catch (e){
         // alert(e.response.data.message)
@@ -58,9 +61,9 @@ export const checkAuthSlice = createAsyncThunk('auth/checkAuthSlice', async ()=>
 })
 
 const initialState = {
-    user: null,
+    user: {},
     isAuth: false,
-    isActivated:false,
+    isActivated:true,
     loading: false
 }
 
@@ -77,54 +80,90 @@ const authSlice = createSlice({
     extraReducers: {
         [registrationAuthSlice.pending]: (state) => {
             state.loading = true
+            state.isAuth = false
+            // state.isActivated = false
+            state.user = {}
         },
         [registrationAuthSlice.fulfilled]: (state, action) => {
             state.loading = false
             if (action.payload?.id){state.isAuth = true}
-
+            // state.isActivated = action.payload?.isActivated
             state.user = action.payload
+            state.isActivated = false
         },
-        [registrationAuthSlice.rejected]:(state)=>{
+        [registrationAuthSlice.rejected]: (state) => {
             state.loading = false
-        },
-        [loginAuthSlice.pending]: (state) => {
-            state.loading = true
-        },
-        [loginAuthSlice.fulfilled]: (state, action) => {
-            state.loading = false
-            if (action.payload?.id){state.isAuth = true}
-
-            state.user = action.payload
-        },
-        [loginAuthSlice.rejected]:(state)=>{
-            state.loading = false
-        },
-
-        [checkAuthSlice.pending]: (state) => {
-            state.loading = true
-        },
-        [checkAuthSlice.fulfilled]: (state, action) => {
-            state.loading = false
-            if (action.payload?.id){state.isAuth = true}
-            state.user = action.payload
-
-        },
-        [checkAuthSlice.rejected]:(state)=>{
-            state.loading = false
-        },
-
-        [logoutAuthSlice.pending]: (state) => {
-            state.loading = true
-        },
-        [logoutAuthSlice.fulfilled]: (state) => {
-            state.loading = false
+            // state.isActivated = false
             state.isAuth = false
             state.user = {}
         },
-        [logoutAuthSlice.rejected]:(state)=>{
+        [loginAuthSlice.pending]: (state) => {
+            state.loading = true
+            // state.isActivated = false
+            state.isAuth = false
+            state.user = {}
+        },
+        [loginAuthSlice.fulfilled]: (state, action) => {
             state.loading = false
+            if (action.payload?.id) {state.isAuth = true}
+            state.isActivated = action.payload?.isActivated
+            state.user = action.payload
+        },
+        [loginAuthSlice.rejected]: (state) => {
+            state.loading = false
+            // state.isActivated = false
+            state.isAuth = false
+            state.user = {}
+        },
+
+
+        [checkAuthSlice.pending]: (state) => {
+                state.loading = true
+            state.isAuth = true
+            // state.isActivated = true
+
+        },
+    [checkAuthSlice.fulfilled]: (state, action) => {
+        state.loading = false
+        if (action.payload?.id) {state.isAuth = true}
+        else {
+            state.isAuth = false
         }
+        if (action.payload?.id) {state.isActivated = action.payload?.isActivated}
+        else {
+            state.isActivated = true
+        }
+
+        // state.isActivated = action.payload?.isActivated
+        state.user = action.payload
+    },
+    [checkAuthSlice.rejected]: (state) => {
+        console.log('rejected')
+        state.loading = false
+        // state.isActivated = false
+        state.isAuth = false
+        state.user = null
+    },
+
+    [logoutAuthSlice.pending]: (state) => {
+        state.loading = true
+        // state.isActivated = false
+        state.isAuth = false
+        state.user = {}
+    },
+    [logoutAuthSlice.fulfilled]: (state) => {
+        localStorage.removeItem('accessToken')
+        localStorage.removeItem('currentItemId')
+        state.loading = false
+        // state.isActivated = false
+        state.isAuth = false
+        state.user = {}
+    },
+    [logoutAuthSlice.rejected]: (state) => {
+        state.loading = false
+
     }
+}
 
 
 })

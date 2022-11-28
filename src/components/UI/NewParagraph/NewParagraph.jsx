@@ -2,8 +2,9 @@ import React, {useEffect, useRef} from 'react';
 import {Box, IconButton, TextField} from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import {useState} from "react";
-import {setParagraphsListSlice} from "../../../store/slices/listSlice";
+import {deleteItemListSlice, setParagraphsListSlice} from "../../../store/slices/listSlice";
 import {useDispatch, useSelector} from "react-redux";
+import Button from '../Button/Button'
 
 const NewParagraph = () => {
     const currentItemId = useSelector(state => state.listReducer.currentItemId)
@@ -13,7 +14,7 @@ const NewParagraph = () => {
          if(currentOwnItem?.[0]?._id===currentItemId){currentItem = currentOwnItem}
          else {currentItem = currentSharedItem}
     console.log(currentItem)
-    const sharedItem = useSelector(state => state.listReducer.items).filter(i=>i?._id===currentItemId)
+    // const sharedItem = useSelector(state => state.listReducer.items).filter(i=>i?._id===currentItemId)
     const dispatch = useDispatch()
     const [addItem, setAddItem] = useState('')
     const newParagraphs = () => {
@@ -30,6 +31,7 @@ const NewParagraph = () => {
     return (
         <>
             <h1>{currentItem?.[0]?.name}</h1>
+            <Button onClick={()=>{dispatch(deleteItemListSlice(currentItemId))}} style={{backgroundColor:'#24cb11', width:'150px'}}>Delete list</Button>
             <Box>
                 <TextField
                      onKeyPress={(e) => {

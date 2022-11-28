@@ -70,6 +70,19 @@ export const deleteParagraphListSlice = createAsyncThunk('listSlice/deleteParagr
     }
     })
 
+export const deleteItemListSlice = createAsyncThunk('listSlice/deleteListListSlice',
+    async (deletedItemId)=>{
+    try{
+        console.log(deletedItemId)
+        const {data} = await axios.delete(`/db/listDelete/${deletedItemId}`)
+        console.log(data)
+        return data
+    }
+    catch (e) {
+
+    }
+    })
+
 
 const initialState = {
     items:
@@ -156,19 +169,20 @@ const listSlice = createSlice({
             state.items = !!action.payload?.userList
                 ? action.payload.userList.items
                 : []
-               state.items = !!action.payload?.userList
-                ? action.payload.userList.items
-                : []
+               // state.items = !!action.payload?.userList
+               //  ? action.payload.userList.items
+               //  : []
             if(localStorage.getItem('currentItemId')){
                 state.currentItemId =localStorage.getItem('currentItemId')
             }
-            else{ state.currentItemId = !!action.payload?.userList
-                ? action.payload.userList.items[0]._id
-                : null
+            else{
+                !!action.payload?.userList
+                ? state.currentItemId = action.payload.userList.items[0]._id
+                : state.currentItemId = null
 
-            !!action.payload?.userList
-            ? localStorage.setItem('currentItemId',action.payload.userList.items[0]._id)
-            :localStorage.removeItem('currentItemId')}
+                !!action.payload?.userList
+                ? localStorage.setItem('currentItemId',action.payload.userList.items[0]._id)
+                :localStorage.removeItem('currentItemId')}
         },
         [getListListSlice.rejected]:(state)=>{},
 
@@ -176,14 +190,13 @@ const listSlice = createSlice({
 
 
         [setItemListSlice.pending]:(state)=>{},
+
         [setItemListSlice.fulfilled]:(state,action)=>{
-            console.log(action.payload.updatedList.items)
         state.items = action.payload.updatedList.items
-            console.log(JSON.parse(JSON.stringify(state.items)))
         state.currentItemId = action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id
-            localStorage.setItem('currentItemId',action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id)
-            console.log('fulfiled')
+        localStorage.setItem('currentItemId',action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id)
         },
+
         [setItemListSlice.rejected]:(state,action)=>{},
 
 
@@ -219,7 +232,31 @@ const listSlice = createSlice({
         },
 
         [deleteParagraphListSlice.rejected]:(state,action)=>{
-        }
+        },
+
+
+        [deleteItemListSlice.pending]:(state,action)=>{
+        },
+
+        [deleteItemListSlice.fulfilled]:(state,action)=>{
+            state.items = action.payload.updatedUser?.items
+            localStorage.removeItem('currentItemId')
+
+            !!action.payload?.updatedUser?.items
+                ? state.currentItemId = action.payload.updatedUser.items[0]?._id
+                : state.currentItemId = null
+
+            !!action.payload?.updatedUser?.items
+                ? localStorage.setItem('currentItemId',action.payload.updatedUser.items[0]?._id)
+                : localStorage.removeItem('currentItemId')
+
+            console.log('after')
+        },
+
+        [deleteItemListSlice.rejected]:(state,action)=>{
+        },
+
+
 }})
 
 export const {

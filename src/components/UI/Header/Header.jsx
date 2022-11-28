@@ -27,9 +27,12 @@ const Header = () => {
                                        : <>{!authState.isAuth && <Link to='/login'><Button color='alter' variant='contained'>Sign in</Button></Link>}
                                           {!authState.isAuth && <Link to='/registration'><Button color='alter' variant='contained'>Sign up</Button></Link>}</>
                     }
+
+                    {!authState.loading &&
+                        <>
                     {authState.isAuth &&
                         <Stack direction="row" spacing={2}>
-                            <Avatar sx={{ bgcolor: [500] }}>{authState.user.username[0].toUpperCase()}</Avatar>
+                            <Avatar sx={{ bgcolor: [500] }}>{authState?.user?.username?.[0].toUpperCase()}</Avatar>
                         </Stack>
                     }
                     <Box mr={2}>
@@ -38,7 +41,7 @@ const Header = () => {
                         dispatch(logoutAuthSlice())
                         dispatch(logoutList())
                     }
-                    }>Exit</Button></Link>}
+                    }>Exit</Button></Link>}</>}
                 </Toolbar>
             </Container>
         </AppBar>
