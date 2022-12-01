@@ -16,24 +16,43 @@ export const getListListSlice = createAsyncThunk('listSlice/getListListSlice',
         }
     })
 
+
 export const setItemListSlice = createAsyncThunk('listSlice/setItemListSlice',
     async (dataModal)=>{
     try{
-        console.log('setItemListSlice')
+        console.log('setItemListSlice!!!!!!!!!')
         const {data} = await axios.post('/db/listAdd',dataModal)
-        console.log('setItemListSlice')
+        console.log('setItemListSlice!!!!!')
         console.log(data)
         return data
         }
     catch (e) {
-        alert('setItemListSlice' + e.response.data.message)
+        alert('setItemListSlice!!!' + e.response.data.message)
     }
 })
+
+
+export const setSharedItemListSlice = createAsyncThunk('listSlice/setSharedItemListSlice',
+    async (arrayId)=>{
+        try{
+            console.log('setSharedItemListSlice')
+            const {data} = await axios.post('/db/filter',{sharedUserItemsId:arrayId})
+            console.log('setItemListSlice')
+            console.log(data)
+            return data
+        }
+        catch (e) {
+            alert('setSharedItemListSlice!!!!!!!' + e.response.data.message)
+        }
+    })
+
+
 
 export const setParagraphsListSlice = createAsyncThunk('listSlice/setParagraphsListSlice',
     async (dataList)=>{
     try{
-        const {data} = await axios.patch(`/db/paragraphChange/${dataList.id}`,
+        console.log(dataList)
+        const {data} = await axios.patch(`/db/paragraphChange/${dataList.id}/${dataList.isOwnItem}`,
             {paragraphName:dataList.name, completed: dataList.completed})
         console.log(data)
         return data
@@ -48,7 +67,7 @@ export const changeParagraphListSlice = createAsyncThunk('listSlice/changeParagr
 
     try {
         console.log(dataList)
-        const{data} = await axios.patch(`/db/updateParagraph/${dataList.itemID}/${dataList.paragraphID}`,{completed:dataList.completed,name:dataList.name})
+        const{data} = await axios.patch(`/db/updateParagraph/${dataList.itemID}/${dataList.paragraphID}/${dataList.isOwnItem}`,{completed:dataList.completed,name:dataList.name})
         console.log(data)
         return data
     }
@@ -61,7 +80,7 @@ export const deleteParagraphListSlice = createAsyncThunk('listSlice/deleteParagr
     async (dataList)=>{
     try {
         console.log(dataList)
-        const{data} = await axios.delete(`/db/deleteParagraph/${dataList.itemID}/${dataList.paragraphID}`)
+        const{data} = await axios.delete(`/db/deleteParagraph/${dataList.itemID}/${dataList.paragraphID}/${dataList.isOwnItem}`)
         console.log(data)
         return data
     }
@@ -87,7 +106,7 @@ export const deleteItemListSlice = createAsyncThunk('listSlice/deleteListListSli
 const initialState = {
     items:
         [
-        // {    _id: '    ',
+            // {    _id: '    ',
         //      name: '',
         //      completed: false,
         //      paragraph: [
@@ -97,19 +116,29 @@ const initialState = {
         //             completed: false},
         //      ]
         // }
-    ],
+            ],
     currentItemId:null,
-    sharedItem:
-        // [
+        sharedItems:
+    //     [
     //     {    _id: '11111',
     //          name: 'wow',
     //          completed: false,
-    //          paragraph: []}
+    //          paragraph: [{
+    //                          name: '1',
+    //                          _id: '11',
+    //                          completed: true},
+    //                          {
+    //                                  name: '2',
+    //                                  _id: '22',
+    //                                  completed: false},
+    //                      {
+    //                                  name: '3',
+    //                                  _id: '33',
+    //                                  completed: false},]}
     // ],
     [],
     sharedItemsId:
-        // [{_id:'11111',
-        //   name: 'wowi'}],
+        // ["63879f3a8eb45a39f0c3b3fe","63879dec8eb45a39f0c3b3be","63879de38eb45a39f0c3b356","63879f408eb45a39f0c3b402"],
         [],
     isActiveModal: false,
     }
@@ -166,6 +195,9 @@ const listSlice = createSlice({
     extraReducers:{
         [getListListSlice.pending]:(state)=>{},
         [getListListSlice.fulfilled]:(state,action)=>{
+            console.log(action.payload.userList.sharedItems)
+            state.sharedItemsId =action.payload.userList.sharedItems
+            console.log(JSON.parse(JSON.stringify(state.sharedItemsId)))
             state.items = !!action.payload?.userList
                 ? action.payload.userList.items
                 : []
@@ -195,9 +227,26 @@ const listSlice = createSlice({
         state.items = action.payload.updatedList.items
         state.currentItemId = action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id
         localStorage.setItem('currentItemId',action.payload.updatedList.items[action.payload.updatedList.items.length-1]._id)
+            state.sharedItemsId =action.payload.updatedList.sharedItems
         },
 
         [setItemListSlice.rejected]:(state,action)=>{},
+
+
+
+        [setSharedItemListSlice.pending]:(state)=>{},
+
+        [setSharedItemListSlice.fulfilled]:(state,action)=>{
+            const sharedItemsArray = []
+            action.payload.forEach(obj=>{
+                obj.items.forEach(item=>{sharedItemsArray.push(item)})
+            })
+            state.sharedItems = sharedItemsArray
+            console.log(sharedItemsArray)
+        },
+
+        [setSharedItemListSlice.rejected]:(state,action)=>{},
+
 
 
 

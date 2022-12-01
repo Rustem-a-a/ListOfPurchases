@@ -1,3 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Mukta&display=swap');
+.wrapper{
+  display: grid;
+  grid-template: 1 fr/1fr 1fr;
+  width: 1920px;
+  height: 98px;
+  background-color: rgba(232, 241, 255, 1);
+
+  .title{
+    align-self: center;
+    margin-left: 262px;
+    justify-self: left;
+    grid-area: 1/1/2/2;
+    font-size: 40px;
+    font-family: 'Mukta',sans-serif;
+
+  }
+  .authorization{
+    margin-right: 262px;
+    justify-self: right;
+    grid-area: 1/2/2/3;
+    font-size: 24px;
+    font-family: 'Mukta',sans-serif;
+    display: flex;
+    justify-content: right;
+    .login{
+      align-self: center;
+      gap: 20px;
+      display: flex;
+      flex-direction: row;
+    }
+    .exit{
+      align-self: center;
+      gap: 20px;
+      display: flex;
+      flex-direction: row;
+      .avatar{
+        display: flex;
+        align-items: center;
+      }
+    }
+
+  }
+}
+
+
+
+
 a{
   text-decoration: none;
   color: black;

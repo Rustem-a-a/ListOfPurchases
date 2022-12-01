@@ -13,38 +13,27 @@ const Header = () => {
     const dispatch = useDispatch()
 
     return (
+<div className={styles.wrapper}>
+                    <div className={styles.title}>Shopping list</div>
+                    <div className={styles.authorization}>
+                        {authState.loading ? <p>Loading...</p>
+                            : <div className={styles.login}>{!authState.isAuth && <Link to='/login'><p>Login</p></Link>}
+                                {!authState.isAuth && <Link to='/registration'><p>Registration</p></Link>}</div>
+                        }
+                        {!authState.loading &&
+                            <div className={styles.exit}>
+                                {authState.isAuth &&
+                                    <div className={styles.avatar}>
+                                        <Avatar sx={{ bgcolor: [500] }}>{authState?.user?.username?.[0].toUpperCase()}</Avatar>
+                                    </div>
+                                }
+                                {authState.isAuth && <Link to='/'><p onClick={()=>{
+                                    dispatch(logoutAuthSlice())
+                                    dispatch(logoutList())}
+                                }>Exit</p></Link>}</div>}
+                    </div>
 
-        <AppBar  position='relative'>
-            <Container  fixed>
-                <Toolbar>
-                    <IconButton edge='start' color='inherit' aria-laabel = 'menu'>
-                        <Menu/>
-                    </IconButton>
-                    <Typography variant='h5'><Link to='/'>Shopping list</Link></Typography>
-                    <Box mr={90}>
-                    </Box>
-                    {authState.loading ? <Button color='alter' variant='contained'>Loading...</Button>
-                                       : <>{!authState.isAuth && <Link to='/login'><Button color='alter' variant='contained'>Sign in</Button></Link>}
-                                          {!authState.isAuth && <Link to='/registration'><Button color='alter' variant='contained'>Sign up</Button></Link>}</>
-                    }
-
-                    {!authState.loading &&
-                        <>
-                    {authState.isAuth &&
-                        <Stack direction="row" spacing={2}>
-                            <Avatar sx={{ bgcolor: [500] }}>{authState?.user?.username?.[0].toUpperCase()}</Avatar>
-                        </Stack>
-                    }
-                    <Box mr={2}>
-                    </Box>
-                    {authState.isAuth && <Link to='/'><Button color='alter' variant='contained' onClick={()=>{
-                        dispatch(logoutAuthSlice())
-                        dispatch(logoutList())
-                    }
-                    }>Exit</Button></Link>}</>}
-                </Toolbar>
-            </Container>
-        </AppBar>
+</div>
     );
 };
 

@@ -5,11 +5,12 @@ import {useState} from "react";
 import {deleteItemListSlice, setParagraphsListSlice} from "../../../store/slices/listSlice";
 import {useDispatch, useSelector} from "react-redux";
 import Button from '../Button/Button'
-
+import useDeepCompareEffect from "use-deep-compare-effect";
 const NewParagraph = () => {
     const currentItemId = useSelector(state => state.listReducer.currentItemId)
     const currentOwnItem = useSelector(state => state.listReducer.items).filter(i=>i?._id===currentItemId)
-    const currentSharedItem = useSelector(state => state.listReducer.sharedItem)
+    const isOwnItem = !! currentOwnItem?.[0]
+    const currentSharedItem = useSelector(state => state.listReducer.sharedItems).filter(i=>i?._id===currentItemId)
     let currentItem = []
          if(currentOwnItem?.[0]?._id===currentItemId){currentItem = currentOwnItem}
          else {currentItem = currentSharedItem}
@@ -23,7 +24,8 @@ const NewParagraph = () => {
                 {
                     id: currentItemId,
                     name: addItem,
-                    completed: false
+                    completed: false,
+                    isOwnItem
                 }))
         }
         setAddItem('')
