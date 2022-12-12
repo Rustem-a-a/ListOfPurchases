@@ -104,41 +104,14 @@ export const deleteItemListSlice = createAsyncThunk('listSlice/deleteListListSli
 
 
 const initialState = {
+    isBlack:false,
     items:
         [
-            // {    _id: '    ',
-        //      name: '',
-        //      completed: false,
-        //      paragraph: [
-        //         {
-        //             name: '',
-        //             _id: '',
-        //             completed: false},
-        //      ]
-        // }
             ],
     currentItemId:null,
         sharedItems:
-    //     [
-    //     {    _id: '11111',
-    //          name: 'wow',
-    //          completed: false,
-    //          paragraph: [{
-    //                          name: '1',
-    //                          _id: '11',
-    //                          completed: true},
-    //                          {
-    //                                  name: '2',
-    //                                  _id: '22',
-    //                                  completed: false},
-    //                      {
-    //                                  name: '3',
-    //                                  _id: '33',
-    //                                  completed: false},]}
-    // ],
     [],
     sharedItemsId:
-        // ["63879f3a8eb45a39f0c3b3fe","63879dec8eb45a39f0c3b3be","63879de38eb45a39f0c3b356","63879f408eb45a39f0c3b402"],
         [],
     isActiveModal: false,
     }
@@ -146,7 +119,12 @@ const listSlice = createSlice({
     name: 'list',
     initialState,
     reducers:
+
         {
+            setTheme(state,action){
+                state.isBlack=!JSON.parse(JSON.stringify(state.isBlack))
+                console.log(JSON.parse(JSON.stringify(state.isBlack)))
+        },
             setCurrentItemId(state,action){
                 state.currentItemId = action.payload
                 localStorage.setItem('currentItemId',action.payload)
@@ -316,7 +294,8 @@ export const {
     removeParagraph,
     setCurrentItemId,
     changeParagraph,
-    logoutList
+    logoutList,
+    setTheme
 
 } = listSlice.actions
 export default listSlice.reducer

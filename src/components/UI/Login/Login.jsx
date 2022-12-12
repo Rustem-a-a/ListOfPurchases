@@ -4,7 +4,8 @@ import Input from "../Input/Input";
 import Button from "../Button/Button";
 import {useDispatch} from "react-redux";
 import {loginAuthSlice} from "../../../store/slices/authSlice";
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
+import {toggleActiveModal} from "../../../store/slices/listSlice";
 const inputStyles = {
     color:'black',
     border: '1px black solid'}
@@ -12,34 +13,47 @@ const inputStyles = {
 const Login = () => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
+    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const cancel = ()=>{navigate('/',{replace:true})}
     const loginData = {
         username,
         password,
             }
 
     return (
-        <div className={styles.wrapper}>
-            <div className={styles.container}>
-                <div className="styles.containerInput">
-                    <Input
-                        style ={inputStyles}
-                        placeholder='Username'
-                        onChange={(e)=>setUsername(e.target.value)}
-                        value={username}/>
-                    <Input
-                        style ={inputStyles}
-                        placeholder='Password'
-                        onChange={(e)=>setPassword(e.target.value)}
-                        value={password}/>
-                </div>
-                <div className={styles.containerBtn}>
-                    <Button onClick={()=>dispatch(loginAuthSlice(loginData))}>Login</Button>
-                    <Link to='/'><Button>Cancel</Button></Link>
+            <div className={styles.modal} onClick={e => e.stopPropagation()}
+                 onKeyDown={(event =>{
+                     if(event.key==="Enter"){dispatch(loginAuthSlice(loginData))}
+                     else if(event.key==="Escape") {cancel()}
+                 })}>
+                <div className={styles.modalName}>Login</div>
+                <span className={styles.modalUsername}><Input
+                    autoFocus
+                    value={username}
+                    onChange={(e) => {
+                        setUsername(e.target.value)
+                    }}
+                    placeholder='Username'
+                    style={{width:'32.604vw', height:'5.833vh'}}
+
+                /></span>
+                <span className={styles.modalPassword}><Input
+                    value={password}
+                    onChange={(e) => {
+                        setPassword(e.target.value)
+                    }}
+                    placeholder='Password'
+                    style={{width:'32.604vw', height:'5.833vh'}}
+
+                /></span>
+                <div className={styles.modalButtons}>
+                    <Button><Link to='/'>Cancel</Link></Button>
+                    <Button disabled={username||password.trim().length ? false : true}
+                            onClick={()=>dispatch(loginAuthSlice(loginData))}
+                    >Login</Button>
                 </div>
             </div>
-
-        </div>
     );
 };
 

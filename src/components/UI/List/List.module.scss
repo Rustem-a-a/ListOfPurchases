@@ -1,6 +1,77 @@
-.uls{
-list-style: none;
-  input:checked + span {
-    text-decoration: line-through;
+//.uls{
+//list-style: none;
+//  input:checked + span {
+//    text-decoration: line-through;
+//  }
+//}
+.wrapper{
+  margin-left: 6.250vw;
+  margin-right: 6.250vw;
+  .inputWrapper{
+    height: 6.630vmin;
+    margin-top: 1.704vmin;
+    border-bottom: 2px darkgrey solid;
+    display: flex;
+    justify-content: space-between;
+    width: 67.063vw;
+    font-size: 1.242vw;
+
+    input:checked + input {
+      text-decoration: line-through;
+    }
+    .checkIcon{
+      align-self: end;
+    }
+    .customInput{
+      width: calc(62.177vw - 55px);
+      border: 0;
+      padding: 0;
+      margin: 0;
+      background-color: rgba(240, 248, 255, 0);
+      align-self: end;
+      outline:none;
+      font-size: 20px;
+    }
+    .iconActive{
+      transition-delay: 250ms;
+      visibility:hidden;
+      align-self: end;
+      display: flex;
+      align-items: end;
+      width: 55px;
+      justify-content: space-between;
+      font-size: 20px;
+    }
+
+    &:focus-within{
+      border-bottom: 2px solid #7383ad;
+      background-color: rgba(225, 233, 243, 0.75);
+      .iconActive {
+        visibility: visible;
+      }
+
+    }
+    &:hover{
+      background-color: rgba(225, 233, 243, 0.75);
+    }
+  }
+}
+
+
+
+
+.wrapperBlack{
+  .inputWrapper{
+    border-bottom: 2px darkgrey solid;
+    .customInput{
+      background-color: rgba(240, 248, 255, 0);
+    }
+    &:focus-within{
+      border-bottom: 2px solid #7383ad;
+      background-color: #3a3a3d;
+    }
+    &:hover{
+      background-color: #3a3a3d;
+    }
   }
 }

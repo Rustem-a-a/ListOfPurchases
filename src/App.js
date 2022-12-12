@@ -11,16 +11,12 @@ import RedirectMsg from "./components/UI/RedirectMsg/RedirectMsg";
 
 function App() {
     const authSlice = useSelector((state) => state.authReducer)
-
     const dispatch = useDispatch()
     useEffect(() => {dispatch(checkAuthSlice() )}, [])
     useEffect(()=>{dispatch(getListListSlice() )},[authSlice.user])
 
-
-
-    console.log(authSlice.isActivated)
     return (
-        <>
+        <div>
             <Routes>
                 <Route path='/' element={<Layout/>}>
 
@@ -43,7 +39,7 @@ function App() {
                     <Route path='*' element={<Body/>}/>
                 </Route>
             </Routes>
-        </>
+        </div>
     );
 }
 

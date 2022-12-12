@@ -11,9 +11,10 @@ import {logoutList} from "../../../store/slices/listSlice";
 const Header = () => {
     const authState = useSelector(state=>state.authReducer)
     const dispatch = useDispatch()
+    const isBlack = useSelector((state)=>state.listReducer.isBlack)
 
     return (
-<div className={styles.wrapper}>
+<div  className={isBlack ? `${styles.wrapper} ${styles.wrapperBlack}` : styles.wrapper}>
                     <div className={styles.title}>Shopping list</div>
                     <div className={styles.authorization}>
                         {authState.loading ? <p>Loading...</p>

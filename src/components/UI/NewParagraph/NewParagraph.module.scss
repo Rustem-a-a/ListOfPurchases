@@ -1,0 +1,105 @@
+.wrapper{
+    margin-left: 6.250vw;
+    display: grid;
+    grid-template: 12.037vmin 10.037vmin 5.556vw 1fr/1fr;
+    margin-right: 6.250vw;
+    .listNameIcons{
+        grid-area: 1/1/2/2;
+        align-self: end;
+        display: grid;
+        grid-template: 1fr / 1fr 1fr;
+        .listName{
+            grid-area: 1/1/2/2;
+            justify-self: left;
+            font-size: 30px;
+            }
+        .deleteShare{
+            grid-area: 1/2/2/3;
+            justify-self: end;
+            display: flex;
+            gap: 1.563vw;
+            margin-right: 1vw;
+            .delete{
+                //font-size: 1.563vw;
+                font-size: 30px;
+                justify-self: end;
+            }
+            .share{
+                //font-size: 1.563vw;
+                font-size: 30px;
+                justify-self: end;
+            }
+        }
+    }
+    .newParagraph{
+        align-self: end;
+        grid-area: 2/1/3/2;
+        .inputWrapper{
+            height: 6.630vmin;
+            border-bottom: 2px darkgrey solid;
+            display: flex;
+            justify-content: space-between;
+            width: 67.063vw;
+            //font-size: 1.242vw;
+            .checkIcon{
+                align-self: end;
+            }
+            .customInput{
+                width: calc(62.177vw - 55px);
+                border: 0;
+                padding: 0;
+                margin: 0;
+                background-color: inherit;
+                align-self: end;
+                outline:none;
+                font-size: 20px;
+            }
+           .iconActive{
+                transition-delay: 250ms;
+                visibility:hidden;
+                align-self: end;
+                display: flex;
+                align-items: end;
+                width: 55px;
+                justify-content: space-between;
+                font-size: 20px;
+           }
+            &:focus-within{
+                border-bottom: 2px solid #7383ad;
+                background-color: aliceblue;
+                .iconActive {
+                    visibility: visible;
+                }
+            }
+            &:hover{
+                background-color: aliceblue;
+            }
+        }
+    }
+    .tasks{
+        grid-area: 3/1/4/2;
+        align-self: end;
+        justify-self: start;
+        font-size: 30px;
+    }
+}
+
+
+.wrapperBlack{
+       .newParagraph{
+        .inputWrapper{
+            border-bottom: 2px darkgrey solid;
+            .customInput{
+                background-color: inherit;
+            }
+            &:focus-within{
+                border-bottom: 2px solid #7383ad;
+                background-color: #3a3a3d;
+            }
+            &:hover{
+                background-color: #3a3a3d;
+            }
+        }
+    }
+}
+

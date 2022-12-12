@@ -2,24 +2,63 @@ $border: 2px black solid;
 .bodyWrapper{
     text-align: center;
     font-size: 2rem;
-    background: azure;
+    background: inherit;
     display: grid;
-    grid-template: 800px/350px 1fr;
+    width: 100%;
+    //min-height: calc(100% - 100px);;
+    grid-template: 5vh 1fr/18.438vw 1fr;
+  background-color: azure;
     //border:$border;
-.left{
-        grid-area: 1/1/2/2;
+  .theme{
+    grid-area: 1/1/2/3;
+    align-self: start;
+    justify-self: end;
+    margin-right: 6.250vw;
+  }
+   .left{
+        grid-area: 2/1/3/2;
         //border: $border;
         display: grid;
         justify-content: left;
         align-content: start;
-  hr{
-    width: 300px;
-    margin-left: 0px;
-  }
+        grid-template: 12.037vmin 12.037vmin 1fr/1fr;
+     .myList{
+          grid-area: 1/1/2/2;
+          align-self: end;
+          justify-self: left;
+          //font-size: 2.083vw;
+          font-size: 30px;
+          margin-left: 6.250vw;
+        }
+     .addListIcon{
+       cursor: pointer;
+       grid-area: 2/1/3/2;
+       align-self: center;
+       justify-self: left;
+       margin-left: 7.031vw;
+       //font-size: 4.167vw;
+       font-size: 75px;
+       color: rgba(133, 211, 221, 1);
+     }
+     .listOfList{
+       grid-area: 3/1/4/2;
+     }
+
+
     }
 
 .right{
-        grid-area: 1/2/2/3;
-        //border: $border;
+        grid-area: 2/2/3/3;
     }
+}
+
+.bodyWrapperBlack {
+  background-color: #171313;
+  color: azure;
+  input {
+    color: azure;
+  }
+  .right {
+    grid-area: 2/2/3/3;
+  }
 }

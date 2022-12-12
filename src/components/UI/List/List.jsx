@@ -9,6 +9,9 @@ import styles from "./List.module.scss";
 import {useDispatch, useSelector} from "react-redux";
 import {TextField} from "@mui/material";
 import useDeepCompareEffect from 'use-deep-compare-effect'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSquare} from "@fortawesome/free-regular-svg-icons";
+import {faCheck, faMinus} from "@fortawesome/free-solid-svg-icons";
 
 const List = () => {
 
@@ -76,28 +79,33 @@ const List = () => {
            dispatch(changeParagraphListSlice(dataForChangeParagraph))
            dispatch(getListListSlice())
     }
+    const isBlack = useSelector((state)=>state.listReducer.isBlack)
+
+    const[isFocus,setisFocus] = useState(true)
     return (
-        <>
-            <ul className={styles.uls}>
-                {componentParagraphs.map((item) => <li key={item._id}>
-                        <input type='checkbox' checked={item.completed} onChange={() => complete(item._id)}/>
-                        <span>
-                            <TextField
-                                style={{width: 1200}} color={'secondary'} sx={{m: 1}} id="standard-basic"
-                                variant="standard" value={item.name}    onChange={(e)=> {
+        <div className={isBlack ? `${styles.wrapper} ${styles.wrapperBlack}` : styles.wrapper}>
+
+            {componentParagraphs.map((item) =>
+                <label htmlFor={item._id}><div key={item._id} className={styles.inputWrapper}>
+                       <input className={styles.checkIcon} type='checkbox' checked={item.completed} onChange={() => complete(item._id)}/>
+
+                           <input id={item._id} className={styles.customInput} type="text"
+                                value={item.name}    onChange={(e)=> {
                                 setComponentParagraphs(componentParagraphs.map(par => {
-                                    if (par._id === item._id) {
-                                        return {...par, name: e.target.value}
-                                    } else return par
-                                }))}}
-                            />
-                        </span>
-                        <span onClick={() =>changeNameOfParagraph(item._id) }>✓</span>
-                        <span onClick={() => removeParagraphs(item._id)}>❌</span>
-                    </li>
-                )}
-            </ul>
-        </>
+                                  if (par._id === item._id) {
+                                      return {...par, name: e.target.value}
+                                 } else return par
+                                 }))}}
+                           />
+                <div className={styles.iconActive}>
+                    <FontAwesomeIcon   onClick={() =>changeNameOfParagraph(item._id) } icon={faCheck} />
+                    <FontAwesomeIcon  onClick={() => removeParagraphs(item._id)} icon={faMinus} />
+                </div>
+
+            </div></label>
+            )}
+
+        </div>
     );
 };
 

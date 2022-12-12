@@ -2,13 +2,15 @@
 .wrapper{
   display: grid;
   grid-template: 1 fr/1fr 1fr;
-  width: 1920px;
-  height: 98px;
+  width: 100%;
+  height: 9.074vmin;
   background-color: rgba(232, 241, 255, 1);
+  box-shadow: 0 2px 5px  black;
+  position: relative;
 
   .title{
     align-self: center;
-    margin-left: 262px;
+    margin-left: 13.646vw;
     justify-self: left;
     grid-area: 1/1/2/2;
     font-size: 40px;
@@ -16,7 +18,7 @@
 
   }
   .authorization{
-    margin-right: 262px;
+    margin-right: 13.646vw;
     justify-self: right;
     grid-area: 1/2/2/3;
     font-size: 24px;
@@ -42,11 +44,65 @@
 
   }
 }
-
-
-
-
 a{
   text-decoration: none;
-  color: black;
+  color: inherit;
 }
+
+.wrapperBlack {
+  background-color: #342e2e;
+  box-shadow: 0 2px 5px rgba(232, 241, 255, 1);
+  color: azure;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+
+@media (max-width: 750px){
+  .wrapper{
+    display: grid;
+    grid-template: 1 fr/1fr 1fr;
+    width: 100%;
+    height: 9.074vmin;
+    background-color: rgba(232, 241, 255, 1);
+
+    .title{
+      align-self: center;
+      margin-left: 13.646vw;
+      justify-self: left;
+      grid-area: 1/1/2/2;
+      font-size: 25px;
+      font-family: 'Mukta',sans-serif;
+
+    }
+    .authorization{
+      margin-right: 13.646vw;
+      justify-self: right;
+      grid-area: 1/2/2/3;
+      font-size: 18px;
+      font-family: 'Mukta',sans-serif;
+      display: flex;
+      justify-content: right;
+      .login{
+        align-self: center;
+        gap: 15px;
+        display: flex;
+        flex-direction: row;
+      }
+      .exit{
+        align-self: center;
+        gap: 15px;
+        display: flex;
+        flex-direction: row;
+        .avatar{
+          display: flex;
+          align-items: center;
+          width: 30px;
+        }
+      }
+
+    }
+  }
+  }

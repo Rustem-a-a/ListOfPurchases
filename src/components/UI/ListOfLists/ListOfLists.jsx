@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import styles from './ListOfLists.module.scss'
-import {NavLink} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {getListListSlice, setCurrentItemId, setSharedItemListSlice} from "../../../store/slices/listSlice";
 
 const ListOfLists = () => {
@@ -41,31 +41,30 @@ const ListOfLists = () => {
     return (
         <div className={styles.wrapper}>
             {userItems.map((item)=>
-                <NavLink to='/'
+                <Link to='/'
                          key={item._id}
-                         className={styles.paragraph}
+                         className={styles.item}
                          onClick={()=>{
                             dispatch(setCurrentItemId(item._id))
                          }
                     }>
-                    <p>{item.name}</p>
-                    <hr/>
-                    <p>{completedCount(item._id)}/{totalCount(item._id)}</p>
-                </NavLink>
+                    <div className={styles.itemName}>{item.name}</div>
+                    <div className={styles.itemCountCompleted}>({completedCount(item._id)}/{totalCount(item._id)})</div>
+                </Link>
                  )}
             {!!sharedItemsId.length &&  <>
-                <h3>Shared lists:</h3>
+                <div className={styles.sharedList}>Shared lists:</div>
                 {sharedItems.map((item)=>
-                        <NavLink to='/'
+                        <Link to='/'
                                  key={item._id}
-                                 className={styles.paragraph}
+                                 className={styles.item}
                                  onClick={()=>{
                                      dispatch(setCurrentItemId(item._id))
                                  }
                                  }>
-                            <p >{item.name}</p>
-                            <p>{sharedCompletedCount(item._id)}/{sharedTotalCount(item._id)}</p>
-                        </NavLink>
+                            <div className={styles.itemName}>{item.name}</div>
+                            <div className={styles.itemCountCompleted}>({sharedCompletedCount(item._id)}/{sharedTotalCount(item._id)})</div>
+                        </Link>
                     )}</>
             }
         </div>
