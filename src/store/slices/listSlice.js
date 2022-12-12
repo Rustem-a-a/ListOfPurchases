@@ -216,8 +216,8 @@ const listSlice = createSlice({
 
         [setSharedItemListSlice.fulfilled]:(state,action)=>{
             const sharedItemsArray = []
-            action.payload.forEach(obj=>{
-                obj.items.forEach(item=>{sharedItemsArray.push(item)})
+            action.payload?.forEach(obj=>{
+                obj.items?.forEach(item=>{sharedItemsArray.push(item)})
             })
             state.sharedItems = sharedItemsArray
             console.log(sharedItemsArray)
