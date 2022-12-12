@@ -38,7 +38,8 @@ const Share = ({setIsShareModalProps}) => {
                     <Button disabled={input.trim().length ? false : true}
                             onClick={()=>{
                                 console.log(dataToShare)
-                                axios.post('/db/postShare', dataToShare)
+                                // axios.post('/db/postShare', dataToShare)
+                                axios.post('https://listofpurchasesserver.onrender.com/db/postShare', dataToShare)
                                 console.log(dataToShare)
                                 setInput('')
                                 setIsShareModalProps(false)}
