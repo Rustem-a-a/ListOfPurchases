@@ -47,7 +47,7 @@ export const logoutAuthSlice = createAsyncThunk('auth/logoutAuthSlice',
 
 export const checkAuthSlice = createAsyncThunk('auth/checkAuthSlice', async ()=>{
     try{
-        // const {data} = await axiosDef('http://localhost:5000/auth/refresh',{withCredentials:true})
+        // const {data} = await axiosDef.get('http://localhost:5000/auth/refresh',{withCredentials:true})
         const {data} = await axiosDef.get('/auth/refresh',{withCredentials:true})
         localStorage.setItem('accessToken',data.accessToken)
         console.log('checkAuthSlice')

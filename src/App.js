@@ -36,7 +36,7 @@ function App() {
                     {!authSlice.isAuth ? <Route path='login' element={<Login/>}/>
                             : <Route path='login' element={<Navigate to='/' replace/>}/>}
 
-                    <Route path='*' element={<Body/>}/>
+                    <Route path='*' element={<Navigate to='/' replace/>}/>
                 </Route>
             </Routes>
         </div>
