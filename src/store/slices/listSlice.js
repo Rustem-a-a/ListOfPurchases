@@ -109,10 +109,8 @@ const initialState = {
         [
             ],
     currentItemId:null,
-        sharedItems:
-    [],
-    sharedItemsId:
-        [],
+    sharedItems:[],
+    sharedItemsId:[],
     isActiveModal: false,
     }
 const listSlice = createSlice({
@@ -173,9 +171,11 @@ const listSlice = createSlice({
     extraReducers:{
         [getListListSlice.pending]:(state)=>{},
         [getListListSlice.fulfilled]:(state,action)=>{
-            console.log(action.payload.userList.sharedItems)
-            state.sharedItemsId =action.payload.userList.sharedItems
-            console.log(JSON.parse(JSON.stringify(state.sharedItemsId)))
+            // console.log(action.payload?.userList.sharedItems)
+            state.sharedItemsId =action.payload?.userList
+            ? action.payload?.userList.sharedItems
+            : []
+                // console.log(JSON.parse(JSON.stringify(state.sharedItemsId)))
             state.items = !!action.payload?.userList
                 ? action.payload.userList.items
                 : []

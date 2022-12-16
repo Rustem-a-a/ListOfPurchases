@@ -48,7 +48,7 @@ export const logoutAuthSlice = createAsyncThunk('auth/logoutAuthSlice',
 export const checkAuthSlice = createAsyncThunk('auth/checkAuthSlice', async ()=>{
     try{
         // const {data} = await axiosDef('http://localhost:5000/auth/refresh',{withCredentials:true})
-        const {data} = await axios.get('/auth/refresh')
+        const {data} = await axiosDef.get('/auth/refresh',{withCredentials:true})
         localStorage.setItem('accessToken',data.accessToken)
         console.log('checkAuthSlice')
         console.log(data)
@@ -126,6 +126,7 @@ const authSlice = createSlice({
         },
     [checkAuthSlice.fulfilled]: (state, action) => {
         state.loading = false
+        console.log(action.payload)
         if (action.payload?.id) {state.isAuth = true}
         else {
             state.isAuth = false

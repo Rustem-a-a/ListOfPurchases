@@ -40,7 +40,7 @@ const ListOfLists = () => {
 
     return (
         <div className={styles.wrapper}>
-            {userItems.map((item)=>
+            {userItems?.map((item)=>
                 <Link to='/'
                          key={item._id}
                          className={styles.item}
