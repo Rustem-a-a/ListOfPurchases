@@ -37,7 +37,7 @@ const Registration = () => {
                     onChange={(e) => {
                         setUsername(e.target.value)
                     }}
-                    placeholder='Username'
+                    placeholder='Email'
                     style={{width:'32.604vw', height:'5.833vh'}}
 
                 /></span>
@@ -52,7 +52,7 @@ const Registration = () => {
                 /></span>
                 <div className={styles.modalButtons}>
                     <Button><Link to='/'>Cancel</Link></Button>
-                    <Button disabled={username||password.trim().length ? false : true}
+                    <Button disabled={(username.trim().length||password.trim().length) && /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/.test(username) ? false : true}
                             onClick={()=>dispatch(registrationAuthSlice(registrationData))}
                     >Registration</Button>
                 </div>
