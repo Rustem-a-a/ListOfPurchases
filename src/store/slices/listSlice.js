@@ -112,6 +112,7 @@ const initialState = {
     sharedItems:[],
     sharedItemsId:[],
     isActiveModal: false,
+    isWait: false
     }
 const listSlice = createSlice({
     name: 'list',
@@ -240,11 +241,13 @@ const listSlice = createSlice({
 },
 
         [changeParagraphListSlice.pending]:(state,action)=>{
+            state.isWait = true
         },
 
         [changeParagraphListSlice.fulfilled]:(state,action)=>{
             state.items = action.payload.updatedUser.items
             console.log(action.payload)
+            state.isWait = false
         },
 
         [changeParagraphListSlice.rejected]:(state,action)=>{

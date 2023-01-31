@@ -16,7 +16,7 @@ import {faCheck, faMinus} from "@fortawesome/free-solid-svg-icons";
 const List = () => {
 
     const currentItemId = useSelector(state => state.listReducer.currentItemId)
-
+    const isWait = useSelector(state => state.listReducer.isWait)
     const currentOwnItem = useSelector(state => state.listReducer.items).filter(i=>i?._id===currentItemId)
     const currentSharedItem = useSelector(state => state.listReducer.sharedItems).filter(i=>i?._id===currentItemId)
     // ---------------- curItemId for function
@@ -87,7 +87,7 @@ const List = () => {
 
             {componentParagraphs.map((item) =>
                 <label htmlFor={item._id}><div key={item._id} className={styles.inputWrapper}>
-                       <input className={styles.checkIcon} type='checkbox' checked={item.completed} onChange={() => complete(item._id)}/>
+                       <input className={styles.checkIcon} type='checkbox' disabled={isWait} checked={item.completed} onChange={() => complete(item._id)}/>
 
                            <input id={item._id} className={styles.customInput} type="text"
                                 value={item.name}    onChange={(e)=> {
